@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using WebApp.Models;
+
 namespace WebApp.Controllers;
 
 [ApiController]
@@ -12,10 +14,12 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly WeatherContext _context;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, WeatherContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     [HttpGet]
@@ -28,5 +32,11 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
+    }
+
+    [HttpGet("types")]
+    public IEnumerable<Weather> GetAllWeather()
+    {
+        return _context.Weathers.ToList();
     }
 }
