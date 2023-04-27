@@ -4,6 +4,12 @@ Use [`EF Core CLI tool`](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 
 - Check `dotnet-ef` tool in `WebAPP/.config/dotnet-tools.json`.
 
+# Make migration meta data files
+
+```bash
+dotnet ef migrations add <Migraion Name>
+```
+
 # Initial DB Schema
 
 ```bash

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 using WebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Add DbContexts to the container.
-builder.Services.AddDbContext<WeatherContext>();
+builder.Services.AddDbContext<WeatherContext>(optionsBuilder =>
+{
+    string path = Path.Combine(
+                Environment.CurrentDirectory, "Labware.db"
+            );
+    optionsBuilder
+        .UseSqlite($"Filename={path}");
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
