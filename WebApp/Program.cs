@@ -4,29 +4,17 @@ using WebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.  
 builder.Services.AddControllersWithViews();
 
 
 // Add DbContexts to the container.
-builder.Services.AddDbContext<LabwareContext>(optionsBuilder =>
-{
-    string path = Path.Combine(
-                Environment.CurrentDirectory, "Labware.db"
-            );
-    optionsBuilder
-        .UseSqlite($"Filename={path}");
-});
+var connectionString = builder.Configuration.GetConnectionString("MSSQL");
 
-builder.Services.AddDbContext<WeatherContext>(optionsBuilder =>
-{
-    string path = Path.Combine(
-                Environment.CurrentDirectory, "Weather.db"
-            );
-    optionsBuilder
-        .UseSqlite($"Filename={path}");
-});
+builder.Services.AddDbContext<LabwareContext>(
+    options => options.UseSqlServer(connectionString));
+
+// builder.Services.AddDbContext<WeatherContext>(options => options.UseSqlServer(connectionString));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -58,17 +46,25 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html"); ;
 
-using (var serviceScope = app.Services.CreateScope())
-{
-    var isCreatedLabwareDB = serviceScope.ServiceProvider
-        .GetRequiredService<LabwareContext>()
-        .Database.EnsureCreated();
-    var isCreatedWeatherDB = serviceScope.ServiceProvider
-       .GetRequiredService<WeatherContext>()
-       .Database.EnsureCreated();
+// using (var serviceScope = app.Services.CreateScope())
+// {
+//     var isExistLabwareDatabase = serviceScope.ServiceProvider
+//         .GetRequiredService<LabwareContext>()
+//         .Database.EnsureCreated();
 
-    Console.WriteLine($"Labware DB is created: {isCreatedLabwareDB}");
-    Console.WriteLine($"Weather DB is created: {isCreatedLabwareDB}");
-}
+//     if (!isExistLabwareDatabase)
+//     {
+//         Console.WriteLine($"Already existed Labware Database.");
+//     }
+
+//     var isExistWeatherDatabase = serviceScope.ServiceProvider
+//        .GetRequiredService<WeatherContext>()
+//        .Database.EnsureCreated();
+
+//     if (!isExistWeatherDatabase)
+//     {
+//         Console.WriteLine($"Already existed  Weather Database.");
+//     }
+// }
 
 app.Run();
