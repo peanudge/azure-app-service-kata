@@ -19,7 +19,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: "6.0.x"
           include-prerelease: true
 
       - name: Build with dotnet
@@ -27,6 +27,14 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      #substitute production appsettings entries to appsettings json file
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: "${{env.DOTNET_ROOT}}/myapp/appsettings.json"
+        env:
+          ConnectionStrings.MSSQL: ${{ secrets.MSSQL_CONNECTION_STRING }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -38,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -51,7 +59,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'sample-labware-management'
-          slot-name: 'Production'
+          app-name: "sample-labware-management"
+          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E6A7F7434F0C47C69DB5734429CFD3C1 }}
           package: .
