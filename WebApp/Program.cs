@@ -46,25 +46,18 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html"); ;
 
-// using (var serviceScope = app.Services.CreateScope())
-// {
-//     var isExistLabwareDatabase = serviceScope.ServiceProvider
-//         .GetRequiredService<LabwareContext>()
-//         .Database.EnsureCreated();
+if (app.Environment.IsDevelopment())
+{
+    using var serviceScope = app.Services.CreateScope();
+    var isExistLabwareDatabase = serviceScope.ServiceProvider
+        .GetRequiredService<LabwareContext>()
+        .Database.EnsureCreated();
 
-//     if (!isExistLabwareDatabase)
-//     {
-//         Console.WriteLine($"Already existed Labware Database.");
-//     }
+    if (!isExistLabwareDatabase)
+    {
+        Console.WriteLine($"Already existed Labware Database.");
+    }
+}
 
-//     var isExistWeatherDatabase = serviceScope.ServiceProvider
-//        .GetRequiredService<WeatherContext>()
-//        .Database.EnsureCreated();
-
-//     if (!isExistWeatherDatabase)
-//     {
-//         Console.WriteLine($"Already existed  Weather Database.");
-//     }
-// }
 
 app.Run();
