@@ -26,11 +26,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
     app.UseDefaultFiles();
 }
-else
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseStaticFiles();
 app.UseHttpsRedirection();
