@@ -12,6 +12,7 @@ public class LabwareDTO
         return new Labware
         {
             DisplayName = DisplayName,
+            Position = new Random().Next(),
             CreatedAt = DateTime.Now
         };
     }
