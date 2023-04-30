@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Models;
 
@@ -11,9 +12,11 @@ using WebApp.Models;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(LabwareContext))]
-    partial class LabwareContextModelSnapshot : ModelSnapshot
+    [Migration("20230430124033_AddLabwarePositionColumn")]
+    partial class AddLabwarePositionColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
